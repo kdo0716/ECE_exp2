@@ -22,7 +22,7 @@
 
 module mux_8to1(I0, I1, I2, I3, I4, I5, I6, I7, S0, S1, S2, Y);
 
-output Y;
+output [3:0] Y;
 input [7:0] I0, I1, I2, I3, I4, I5, I6, I7;
 input S0, S1, S2;
 

@@ -1,0 +1,25 @@
+Vivado Simulator v2022.2
+Copyright 1986-1999, 2001-2022 Xilinx, Inc. All Rights Reserved.
+Running: C:/Xilinx/Vivado/2022.2/bin/unwrapped/win64.o/xelab.exe --incr --debug typical --relax --mt 2 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip --snapshot testbench_behav xil_defaultlib.testbench xil_defaultlib.glbl -log elaborate.log 
+Using 2 slave threads.
+Starting static elaboration
+Pass Through NonSizing Optimizer
+WARNING: [VRFC 10-3091] actual bit length 4 differs from formal bit length 8 for port 'I0' [C:/Users/82109/JJS2/ECE_exp2/mux_8to1/mux_8to1.srcs/sim_1/new/testbench.v:31]
+WARNING: [VRFC 10-3091] actual bit length 4 differs from formal bit length 8 for port 'I1' [C:/Users/82109/JJS2/ECE_exp2/mux_8to1/mux_8to1.srcs/sim_1/new/testbench.v:32]
+WARNING: [VRFC 10-3091] actual bit length 4 differs from formal bit length 8 for port 'I2' [C:/Users/82109/JJS2/ECE_exp2/mux_8to1/mux_8to1.srcs/sim_1/new/testbench.v:33]
+WARNING: [VRFC 10-3091] actual bit length 4 differs from formal bit length 8 for port 'I3' [C:/Users/82109/JJS2/ECE_exp2/mux_8to1/mux_8to1.srcs/sim_1/new/testbench.v:34]
+WARNING: [VRFC 10-3091] actual bit length 4 differs from formal bit length 8 for port 'I4' [C:/Users/82109/JJS2/ECE_exp2/mux_8to1/mux_8to1.srcs/sim_1/new/testbench.v:35]
+WARNING: [VRFC 10-3091] actual bit length 4 differs from formal bit length 8 for port 'I5' [C:/Users/82109/JJS2/ECE_exp2/mux_8to1/mux_8to1.srcs/sim_1/new/testbench.v:36]
+WARNING: [VRFC 10-3091] actual bit length 4 differs from formal bit length 8 for port 'I6' [C:/Users/82109/JJS2/ECE_exp2/mux_8to1/mux_8to1.srcs/sim_1/new/testbench.v:37]
+WARNING: [VRFC 10-3091] actual bit length 4 differs from formal bit length 8 for port 'I7' [C:/Users/82109/JJS2/ECE_exp2/mux_8to1/mux_8to1.srcs/sim_1/new/testbench.v:38]
+WARNING: [VRFC 10-3091] actual bit length 3 differs from formal bit length 1 for port 'S0' [C:/Users/82109/JJS2/ECE_exp2/mux_8to1/mux_8to1.srcs/sim_1/new/testbench.v:39]
+WARNING: [VRFC 10-3091] actual bit length 3 differs from formal bit length 1 for port 'S1' [C:/Users/82109/JJS2/ECE_exp2/mux_8to1/mux_8to1.srcs/sim_1/new/testbench.v:40]
+WARNING: [VRFC 10-3091] actual bit length 3 differs from formal bit length 1 for port 'S2' [C:/Users/82109/JJS2/ECE_exp2/mux_8to1/mux_8to1.srcs/sim_1/new/testbench.v:41]
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module xil_defaultlib.mux_8to1
+Compiling module xil_defaultlib.testbench
+Compiling module xil_defaultlib.glbl
+Built simulation snapshot testbench_behav
