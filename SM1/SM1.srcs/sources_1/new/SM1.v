@@ -6,16 +6,14 @@ input clk, rst, x;
 output reg [1:0] state;
 output reg y;
 
-parameter S0 = 2'b00, S1 = 2'b01, S2 = 2'b10, S3 = 2'b11;
-
 always @(negedge rst or posedge clk) begin
-    if(!rst) state <= S0;
+    if(!rst) state <= 2'b00;
     else begin
         case(state)
-            S0: state <= x ? 2'b01 : 2'b00;
-            S1: state <= x ? 2'b11 : 2'b00;
-            S2: state <= x ? 2'b10 : 2'b00;
-            S3: state <= x ? 2'b10 : 2'b00;
+            2'b00: state <= x ? 2'b01 : 2'b00;
+            2'b01: state <= x ? 2'b11 : 2'b00;
+            2'b10: state <= x ? 2'b10 : 2'b00;
+            2'b11: state <= x ? 2'b10 : 2'b00;
         endcase
     end
 end
@@ -23,10 +21,10 @@ always @(negedge rst or posedge clk) begin
     if(!rst) y <= 0;
     else begin
         case(state)
-            S0: y <= 1'b0;
-            S1: y <= x ? 1'b0 : 1'b1;
-            S2: y <= x ? 1'b0 : 1'b1;
-            S3: y <= x ? 1'b0 : 1'b1;
+            2'b00: y <= 1'b0;
+            2'b01: y <= x ? 1'b0 : 1'b1;
+            2'b10: y <= x ? 1'b0 : 1'b1;
+            2'b11: y <= x ? 1'b0 : 1'b1;
         endcase
     end
 end
