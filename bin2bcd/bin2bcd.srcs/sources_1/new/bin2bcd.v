@@ -1,5 +1,5 @@
 `timescale 1ns / 1ps
-
+//page 11
 module bin2bcd(clk, rst, bin, bcd);
 //from 4-bit binary to BCD module
 input clk, rst;
