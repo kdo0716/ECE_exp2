@@ -5,6 +5,7 @@ module testbench();
 reg clk, rst;
 reg btn;
 reg [3:0] state_bin;
+wire [7:0] state_bcd;
 wire [7:0] seg_data;
 wire [7:0] seg_sel;
 wire [3:0] bcd;
