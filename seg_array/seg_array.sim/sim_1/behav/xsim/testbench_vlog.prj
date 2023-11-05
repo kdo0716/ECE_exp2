@@ -1,6 +1,9 @@
 # compile verilog/system verilog design source files
 verilog xil_defaultlib  \
+"../../../../seg_array.srcs/sources_1/new/bin2bcd.v" \
+"../../../../seg_array.srcs/sources_1/new/oneshot_universal.v" \
 "../../../../seg_array.srcs/sources_1/new/seg_array.v" \
+"../../../../seg_array.srcs/sim_1/new/testbench.v" \
 
 # compile glbl module
 verilog xil_defaultlib "glbl.v"
