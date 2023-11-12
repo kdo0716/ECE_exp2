@@ -1,0 +1,7 @@
+Running: xsim.dir/text_LCD_basic_behav/xsimk.exe -simmode gui -wdb text_LCD_basic_behav.wdb -simrunnum 0 -socket 57546
+Design successfully loaded
+Design Loading Memory Usage: 7312 KB (Peak: 7312 KB)
+Design Loading CPU Usage: 77 ms
+Simulation completed
+Simulation Memory Usage: 7828 KB (Peak: 7828 KB)
+Simulation CPU Usage: 93 ms
