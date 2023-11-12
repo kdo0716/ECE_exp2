@@ -45,7 +45,7 @@ begin
                 if(cnt == 30) state = ENTRY_MODE;
             end
             ENTRY_MODE : begin
-                LED_out = 8'b0001_0000;
+                LED_out = 8'b0001_0000; 
                 if(cnt == 30) state = LINE1;
             end
             LINE1 : begin
@@ -113,11 +113,11 @@ begin
     else begin
         case(state)
             FUNCTION_SET :
-                {LCD_RS, LCD_RW, LCD_DATA} = 10'b0_0_0011_1000; //if I use only LINE1, change to 10'b0_0_00110000
+                {LCD_RS, LCD_RW, LCD_DATA} = 10'b0_0_0011_1000; //if I use only LINE1, change to 10'b0_0_00110000;
             DISP_ONOFF :
                 {LCD_RS, LCD_RW, LCD_DATA} = 10'b0_0_0000_1100;
             ENTRY_MODE :
-                {LCD_RS, LCD_RW, LCD_DATA} = 10'b0_0_0000_0110;
+                {LCD_RS, LCD_RW, LCD_DATA} = 10'b0_0_0000_0110; //If I want to shift screen, change to 10'b0_0_0000_0111;
                 
 // (page 9) first line : HELLO WORLD
 LINE1 :
