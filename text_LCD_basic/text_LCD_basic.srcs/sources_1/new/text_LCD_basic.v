@@ -147,7 +147,7 @@ LINE1 :
 LINE2 :
     begin
         case(cnt)
-            00 : {LCD_RS, LCD_RW, LCD_DATA} = 10'b0_0_1100_0000;
+            00 : {LCD_RS, LCD_RW, LCD_DATA} = 10'b0_0_1100_0000; //if I want to change start address in LINE2, change LCD_DATA to address that I want (10'b0_0_1100_0011)
             01 : {LCD_RS, LCD_RW, LCD_DATA} = 10'b1_0_0011_0010; //2
             02 : {LCD_RS, LCD_RW, LCD_DATA} = 10'b1_0_0011_0000; //0
             03 : {LCD_RS, LCD_RW, LCD_DATA} = 10'b1_0_0011_0010; //2
