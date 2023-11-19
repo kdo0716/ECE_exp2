@@ -1,0 +1,6 @@
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/82109/JJS2/ECE_exp2/LCD_cursor/LCD_cursor.srcs/sources_1/new/LCD_cursor.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module LCD_cursor
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/82109/JJS2/ECE_exp2/LCD_cursor/LCD_cursor.srcs/sources_1/new/oneshot_universal.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module oneshot_universal
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/82109/JJS2/ECE_exp2/LCD_cursor/LCD_cursor.srcs/sim_1/new/testbench.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module testbench
