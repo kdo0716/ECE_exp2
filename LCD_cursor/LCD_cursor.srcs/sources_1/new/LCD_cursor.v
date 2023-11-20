@@ -142,10 +142,10 @@ begin
                  
            CURSOR :
             if(cnt == 20) begin
-//                case(control_btn)
-//                    2'b10 : {LCD_RS, LCD_RW, LCD_DATA} <= 10'b0_0_0001_0000;                      
-//                    2'b01 : {LCD_RS, LCD_RW, LCD_DATA} <= 10'b0_0_0001_0100;
-//              endcase  
+/*                case(control_btn)
+                    2'b10 : {LCD_RS, LCD_RW, LCD_DATA} <= 10'b0_0_0001_0000;                      
+                    2'b01 : {LCD_RS, LCD_RW, LCD_DATA} <= 10'b0_0_0001_0100;
+              endcase  */
                     if( control_btn == 2'b10) begin
                     {LCD_RS, LCD_RW, LCD_DATA} <= 10'b0_0_0001_0000;  // left
                     a <= a - 1;
