@@ -1,162 +1,184 @@
-`timescale 1ns / 1ps
-//page 5
-module LCD_cursor(rst, clk, LCD_E, LCD_RS, LCD_RW, LCD_DATA, LED_out, number_btn, control_btn);
+module LCD_cursor(rst, clk, LCD_E, LCD_RS, LCD_RW, LCD_DATA, LED_out, number_btn, control_btn, switch);
 
 input rst, clk;
 input [9:0] number_btn;
 input [1:0] control_btn;
+input switch;
+
+
 
 wire [9:0] number_btn_t;
 wire [1:0] control_btn_t;
+wire switch_t;
 
-oneshot_universal #(.WIDTH(12)) O1(clk, rst, {number_btn[9:0], control_btn[1:0]}, {number_btn_t[9:0], control_btn_t[1:0]});
+oneshot_universal #(.WIDTH(13)) O1(clk, rst, {number_btn[9:0], control_btn[1:0], switch}, {number_btn_t[9:0], control_btn_t[1:0], switch_t});
+
 
 output LCD_E, LCD_RS, LCD_RW;
-output reg [7:0] LCD_DATA;
-output reg [7:0] LED_out;
+output reg[7:0] LCD_DATA;
+output reg[7:0] LED_out;
 
 wire LCD_E;
 reg LCD_RS, LCD_RW;
 
-reg [7:0] cnt;
+
 
 reg [2:0] state;
-parameter DELAY = 3'b000,
-          FUNCTION_SET = 3'b001,
-          DISP_ONOFF = 3'b010,
-          ENTRY_MODE = 3'b011,
-          SET_ADDRESS = 3'b100,
-          DELAY_T = 3'b101,
-          WRITE = 3'b110,
-          CURSOR = 3'b111;
+parameter DELAY = 3'b000;
+parameter FUNCTION_SET = 3'b001;
+parameter DISP_ONOFF   = 3'b010;
+parameter ENTRY_MODE   = 3'b011;
+
+parameter SET_ADDRESS  = 3'b100;
+parameter DELAY_T      = 3'b101; 
+parameter WRITE        = 3'b110; 
+parameter CURSOR       = 3'b111;
           
-//page 7
+integer cnt;
+integer a;
+
 always @(posedge clk or negedge rst)
 begin
     if(!rst) begin
-        state <= DELAY;
-        LED_out <= 8'b0000_0000;
-    end
+        {state, cnt} <= {DELAY, 0};
+        LED_out = 8'b0000_0000;
+        a <= 0;
+       end
     else begin
         case(state)
             DELAY : begin
-                if(cnt == 70) state <= FUNCTION_SET;
-                LED_out <= 8'b1000_0000;
+                if(cnt == 70) 
+                begin {state, cnt} <= {FUNCTION_SET, 0};
+                                LED_out = 8'b1000_0000;
+                end
+                else cnt <= cnt + 1;
             end
-            FUNCTION_SET : begin
-                if(cnt == 30) state <= DISP_ONOFF;
-                LED_out <= 8'b0100_0000;
+            FUNCTION_SET : begin  
+                if(cnt == 30)
+                begin {state, cnt} <= {DISP_ONOFF, 0};
+                LED_out = 8'b0100_0000;
+                end
+                else cnt <= cnt + 1;
             end
+
             DISP_ONOFF : begin
-                if(cnt == 30) state <= ENTRY_MODE;
-                LED_out <= 8'b0010_0001;
+                if(cnt == 30)
+                begin {state, cnt} <= {ENTRY_MODE, 0};
+                LED_out <= 8'b0010_0000; // cursor blink
+                end
+                else cnt <= cnt + 1;
             end
-            ENTRY_MODE : begin
-                if(cnt == 30) state <= SET_ADDRESS;
+            ENTRY_MODE : begin   
+                if(cnt == 30)
+                begin {state, cnt} <= {SET_ADDRESS, 0};
                 LED_out <= 8'b0001_0000;
+                end
+                else cnt <= cnt + 1;
             end
             SET_ADDRESS : begin
-                if(cnt == 100) state <= DELAY_T;
+                if(cnt == 100)
+                begin {state, cnt} <= {DELAY_T, 0};
                 LED_out <= 8'b0000_1000;
+                end
+                else cnt <= cnt + 1;
             end
             DELAY_T : begin
-                state <= |number_btn_t ? WRITE : (|control_btn_t ? CURSOR : DELAY_T);
-                LED_out <= 8'b0000_0100;
+                LED_out <= 8'b0000_0100; 
+                state <= |number_btn_t ? WRITE : (|control_btn_t | switch ? CURSOR : DELAY_T);
+                cnt <= 0 ;
+               
             end
             WRITE : begin
-                if(cnt == 30) state <= DELAY_T;
                 LED_out <= 8'b0000_0010;
+                if(cnt == 30) {state, cnt} <= {DELAY_T, 0};
+                else cnt <= cnt + 1;
             end
             CURSOR : begin
-                if(cnt == 30) state <= DELAY_T;
                 LED_out <= 8'b0000_0001;
+                if(cnt == 30) {state, cnt} <= {DELAY_T, 0};
+                else cnt <= cnt + 1;
             end
-        endcase
-    end
-end
-             
-//page 8
+            default : state = DELAY;
+         endcase
+     end
+  end
+   
 always @(posedge clk or negedge rst)
 begin
     if(!rst)
-       cnt <= 8'b0000_0000;
-   else
-   begin
-       case(state)
-        DELAY :
-            if(cnt >= 70) cnt <= 0;
-            else cnt <= cnt + 1;
-        FUNCTION_SET :
-            if(cnt >= 30) cnt <= 0;
-            else cnt <= cnt + 1;
-        DISP_ONOFF :
-            if(cnt >= 30) cnt <= 0;
-            else cnt <= cnt + 1;
-        ENTRY_MODE :
-            if(cnt >= 30) cnt <= 0;
-            else cnt <= cnt + 1;
-        SET_ADDRESS :
-            if(cnt >= 100) cnt <= 0;
-            else cnt <= cnt + 1;
-        DELAY_T :
-            cnt <= 0;
-        WRITE :
-            if(cnt >= 30) cnt <= 0;
-            else cnt <= cnt + 1;
-        CURSOR :
-            if(cnt >= 30) cnt <= 0;
-            else cnt <= cnt + 1;
-        endcase
-    end
-end
-//page 9
-always @(posedge clk or negedge rst)
-begin
-    if(!rst)
-        {LCD_RS, LCD_RW, LCD_DATA} <= 10'b0_0_0000_0001;
-    else
-    begin
+        {LCD_RS, LCD_RW, LCD_DATA} <= 10'b0_0_00000001; // clear display 
+    else begin
         case(state)
-            FUNCTION_SET :
-                {LCD_RS, LCD_RW, LCD_DATA} <= 10'b0_0_0011_1000;
+            FUNCTION_SET : 
+            
+                {LCD_RS, LCD_RW, LCD_DATA} <= 10'b0_0_0011_1000; // 2line if switch = 1
+               
             DISP_ONOFF :
                 {LCD_RS, LCD_RW, LCD_DATA} <= 10'b0_0_0000_1111;
             ENTRY_MODE :
                 {LCD_RS, LCD_RW, LCD_DATA} <= 10'b0_0_0000_0110;
             SET_ADDRESS :
-                {LCD_RS, LCD_RW, LCD_DATA} <= 10'b0_0_0000_0010; //cursor at home
+                {LCD_RS, LCD_RW, LCD_DATA} <= 10'b0_0_0000_0010;
             DELAY_T :
-                {LCD_RS, LCD_RW, LCD_DATA} <= 10'b0_0_0000_1111;
-            WRITE : begin
+                {LCD_RS, LCD_RW, LCD_DATA} <= 10'b0_0_0000_1111;        
+                
+           WRITE : begin
                 if(cnt == 20) begin
                     case(number_btn)
-                        10'b1000_0000_00 : {LCD_RS, LCD_RW, LCD_DATA} <= 10'b1_0_0011_0001; //1
-                        10'b0100_0000_00 : {LCD_RS, LCD_RW, LCD_DATA} <= 10'b1_0_0011_0010; //2
-                        10'b0010_0000_00 : {LCD_RS, LCD_RW, LCD_DATA} <= 10'b1_0_0011_0011; //3
-                        10'b0001_0000_00 : {LCD_RS, LCD_RW, LCD_DATA} <= 10'b1_0_0011_0100; //4
-                        10'b0000_1000_00 : {LCD_RS, LCD_RW, LCD_DATA} <= 10'b1_0_0011_0101; //5
-                        10'b0000_0100_00 : {LCD_RS, LCD_RW, LCD_DATA} <= 10'b1_0_0011_0110; //6
-                        10'b0000_0010_00 : {LCD_RS, LCD_RW, LCD_DATA} <= 10'b1_0_0011_0111; //7
-                        10'b0000_0001_00 : {LCD_RS, LCD_RW, LCD_DATA} <= 10'b1_0_0011_1000; //8
-                        10'b0000_0000_10 : {LCD_RS, LCD_RW, LCD_DATA} <= 10'b1_0_0011_1001; //9
-                        10'b0000_0000_01 : {LCD_RS, LCD_RW, LCD_DATA} <= 10'b1_0_0011_0000; //0
-                    endcase
+                        10'b1000_0000_00 : {LCD_RS, LCD_RW, LCD_DATA} <= 10'b1_0_0011_0001;
+                        10'b0100_0000_00 : {LCD_RS, LCD_RW, LCD_DATA} <= 10'b1_0_0011_0010;
+                        10'b0010_0000_00 : {LCD_RS, LCD_RW, LCD_DATA} <= 10'b1_0_0011_0011;
+                        10'b0001_0000_00 : {LCD_RS, LCD_RW, LCD_DATA} <= 10'b1_0_0011_0100;
+                        10'b0000_1000_00 : {LCD_RS, LCD_RW, LCD_DATA} <= 10'b1_0_0011_0101;
+                        10'b0000_0100_00 : {LCD_RS, LCD_RW, LCD_DATA} <= 10'b1_0_0011_0110;
+                        10'b0000_0010_00 : {LCD_RS, LCD_RW, LCD_DATA} <= 10'b1_0_0011_0111;
+                        10'b0000_0001_00 : {LCD_RS, LCD_RW, LCD_DATA} <= 10'b1_0_0011_1000;
+                        10'b0000_0000_10 : {LCD_RS, LCD_RW, LCD_DATA} <= 10'b1_0_0011_1001;
+                        10'b0000_0000_01 : {LCD_RS, LCD_RW, LCD_DATA} <= 10'b1_0_0011_0000;
+                        endcase
+                    end
+                    else {LCD_RS, LCD_RW, LCD_DATA} <= 10'b0_0_0000_1111;
+                 end
+                 
+           CURSOR :
+            if(cnt == 20) begin
+//                case(control_btn)
+//                    2'b10 : {LCD_RS, LCD_RW, LCD_DATA} <= 10'b0_0_0001_0000;                      
+//                    2'b01 : {LCD_RS, LCD_RW, LCD_DATA} <= 10'b0_0_0001_0100;
+//              endcase  
+                    if( control_btn == 2'b10) begin
+                    {LCD_RS, LCD_RW, LCD_DATA} <= 10'b0_0_0001_0000;  // left
+                    a <= a - 1;
+                    end
+                    else if( control_btn == 2'b01) begin
+                     {LCD_RS, LCD_RW, LCD_DATA} <= 10'b0_0_0001_0100;  // right
+                     a <= a + 1;
+                     end
+               else if( a == 16) begin
+                {LCD_RS, LCD_RW, LCD_DATA} <= 10'b0_0_1100_0000;
                 end
-                else {LCD_RS, LCD_RW, LCD_DATA} <= 10'b0_0_0000_1111;
-            end
-            CURSOR : begin
-                if(cnt == 20) begin
-                    case(control_btn)
-                        2'b10 : {LCD_RS, LCD_RW, LCD_DATA} <= 10'b0_0_0001_0000; //left
-                        2'b01 : {LCD_RS, LCD_RW, LCD_DATA} <= 10'b0_0_0001_0100; //right
-                    endcase
+                else if( a== 32) begin
+                {LCD_RS, LCD_RW, LCD_DATA} <= 10'b0_0_1000_0000;
+                a <= 0;
                 end
-                else {LCD_RS, LCD_RW, LCD_DATA} <= 10'b0_0_0000_1111;
+                else if( switch <= 0) begin
+                {LCD_RS, LCD_RW, LCD_DATA} <= 10'b0_0_1000_0000;
+                end
+                else if(switch <=1) begin
+                {LCD_RS, LCD_RW, LCD_DATA} <= 10'b0_0_1100_0000;
+                end
             end
-        endcase
+           
+            
+            
+            
+            else  {LCD_RS, LCD_RW, LCD_DATA} <= 10'b0_0_0000_1111;
+        
+      endcase
     end
-end
-
-assign LCD_E = clk;
-
-endmodule
+ end
+ 
+ 
+ assign LCD_E = clk;
+ 
+  endmodule    
