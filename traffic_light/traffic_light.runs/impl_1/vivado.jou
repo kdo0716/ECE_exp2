@@ -1,0 +1,14 @@
+#-----------------------------------------------------------
+# Vivado v2023.2 (64-bit)
+# SW Build 4029153 on Fri Oct 13 20:14:34 MDT 2023
+# IP Build 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Start of session at: Fri Dec  8 22:47:57 2023
+# Process ID: 12764
+# Current directory: C:/Users/82109/JJS2/ECE_exp2/traffic_light/traffic_light.runs/impl_1
+# Command line: vivado.exe -log traffic_light.vdi -applog -product Vivado -messageDb vivado.pb -mode batch -source traffic_light.tcl -notrace
+# Log file: C:/Users/82109/JJS2/ECE_exp2/traffic_light/traffic_light.runs/impl_1/traffic_light.vdi
+# Journal file: C:/Users/82109/JJS2/ECE_exp2/traffic_light/traffic_light.runs/impl_1\vivado.jou
+# Running On: DESKTOP-BHC7JEH, OS: Windows, CPU Frequency: 2712 MHz, CPU Physical cores: 2, Host memory: 8486 MB
+#-----------------------------------------------------------
+source traffic_light.tcl -notrace
