@@ -364,7 +364,7 @@ always @(posedge clk or negedge rst) begin
 
    else begin
 
-      if((hour_10 == 0 && hour_1 >= 8) || (hour_10 == 1 && hour_1 <= 9) || (hour_10 == 2 && hour_1 <= 3)) // DAY : 8~23
+      if((hour_10 == 0 && hour_1 >= 8) || (hour_10 == 1 && hour_1 <= 9) || (hour_10 == 2 && hour_1 < 3)) // DAY : 8~23 //here
 
       DAY <= 1;
 
